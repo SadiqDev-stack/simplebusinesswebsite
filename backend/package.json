@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "small business website with contact and api intergration",
+  "keywords": [
+    "business",
+    "website"
+  ],
+  "homepage": "https://github.com/SadiqDev-stack/simplebusinesswebsite#readme",
+  "bugs": {
+    "url": "https://github.com/SadiqDev-stack/simplebusinesswebsite/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SadiqDev-stack/simplebusinesswebsite.git"
+  },
+  "license": "ISC",
+  "author": "sadiq cyber",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --env-file=.env --watch server.js"
+  }
+}
