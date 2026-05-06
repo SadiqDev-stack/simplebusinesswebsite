@@ -51,7 +51,13 @@ app.use((req, res, next) => {
 });
 
 
-app.use(express.static(path.join(__dirname, "../frontend/dist/index.html")))
+// 1. Serve static files from the build/dist folder
+app.use(express.static(path.join(__dirname, '../frontend/dist'))); 
+
+// This ensures that refreshing the page doesn't give a 404 handle spas routing for react and other frontend routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
 
 // routers 
 app.use("/api/user", dbHandler, userRouter);
