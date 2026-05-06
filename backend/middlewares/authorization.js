@@ -1,5 +1,5 @@
 
-import { getTokenData } from "../helper.js";
+import { getTokenData } from "../utilities/general.js";
 import mongoose from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
 

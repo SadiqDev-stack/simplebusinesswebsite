@@ -7,11 +7,8 @@ import User from "../models/user.js";
 import fs from "fs/promises";
 import path from "path";
 import {log} from "../middlewares/logger.js"
-import compressor from "lz-string";
-import multer from "multer";
 import mongoose from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
-import {Redis} from "@upstash/redis";
 import {AppError} from "../middlewares/logger.js"
 import rateLimit from "express-rate-limit";
 
@@ -128,16 +125,7 @@ const rewriteFile = async (file, location) => {
 
 
 
-// to tell user something and redirect eg in email confirmation if confirmed
-const sendMessage = (res, message, redirect, img = "/images/success.png") => {
-    res.send(messageTemplate(message, redirect, img))
-}
 
-/* for.multer upload files */
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 200 * 1024 * 1024 }, // 200MB
-});
 
 
 process.__dirname = __dirname;
@@ -154,75 +142,7 @@ const setCookie = (res, key = 'key', value = 'value', expiresInMs = 1000 * 60 * 
     res.cookie(key, value, options)
 }
 
-// for caching
-const cacheMem = new Redis({
-    url: UPSTASH_REDIS_REST_URL,
-    token: UPSTASH_REDIS_REST_TOKEN
-})
 
-
-const setCache = (key, data, expiring = true) => {
-    return false // disabled
-    key = `${APP_NAME}:${APP_ID}:${key}`
-    if(!data) return false
-    try{
-    const serializedData = JSON.stringify(data);
-    if (expiring === true) {
-        return cacheMem.set(key, serializedData, {
-            EX: CACHE_EXPIRE_TIME,
-        });
-    } else if (typeof expiring === "number") {
-        return cacheMem.set(key, serializedData, {
-            EX: expiring
-        });
-    } else {
-        return cacheMem.set(key, serializedData);
-    }
-    log("cache added/updated: " + expiring, "warning")
-    }catch(er){
-        return false
-    }
-};
-
-const getCache = key => {
-    return false // disabled 
-    if(!key) return false
-    key = `${APP_NAME}:${APP_ID}:${key}`;
-    return new Promise((res, rej) => {
-        cacheMem.get(key)
-            .then(data => {
-                try {
-                    res(JSON.parse(data));
-                } catch (err) {
-                    res(data);
-                }
-                if(data) log("cache hitted!!")
-            })
-            .catch(err =>{
-            log("cache missed!!!", "bad")
-            res(false)
-            })
-    });
-};
-
-const checkCache = async (key, notFoundCb) => {
-    const data = await notFoundCb(); // disabled
-    return data[0]
-    try {
-        const data = await getCache(key);
-        if (data){
-            return data;
-        }
-    
-        if(!notFoundCb) return false
-        const [freshData, expiring = false] = await notFoundCb();
-        await setCache(key, freshData, expiring);
-        
-        return freshData;
-    } catch (err) {
-        throw err;
-    }
-};
 
 
 // for input and data 
@@ -298,16 +218,10 @@ export {
     deleteFile,
     __dirname,
     path,
-    sendMessage,
-    upload,
     uploadFile,
     rewriteFile,
     generateKey,
     setCookie,
-    cacheMem,
-    checkCache,
-    getCache,
-    setCache,
     sanitizeInput,
     useLimiter,
     random

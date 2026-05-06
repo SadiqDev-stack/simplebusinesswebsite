@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 const { MAX_LOGIN_FAIL_ATTEMPT = 5 } = process.env;
 import { generateKey } from "../utilities/general.js";
-import { mongoose } from "../routers/dbhandler.js";
+import { mongoose } from "../middlewares/dbhandler.js";
 
 const { ObjectId } = mongoose.Types;
 

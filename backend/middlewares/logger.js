@@ -1,5 +1,19 @@
 import colors from "colors";
 
+class AppError extends Error {
+  constructor(message, statusCode = 400, isSystemError = false) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.isSystemError = isSystemError; // false = app error, true = system error
+    this.isOperational = true; // Mark as operational error
+    this.timestamp = new Date().toISOString();
+    
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+
 const logger = (req, res, next) => {
   const { method, url } = req;
   const host = req.get('host');
@@ -25,7 +39,10 @@ const log = (message, color = "good") => {
 }
 
 
+
+
 export {
   log,
-  logger
+  logger,
+  AppError
 }

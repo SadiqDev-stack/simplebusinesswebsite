@@ -1,6 +1,6 @@
 import User from "../models/user.js";
-import { compareHashes } from "../helper.js";
-import {log} from "../middlewares/logger.js"
+import { compareHashes } from "../utilities/general.js";
+import {log} from "./logger.js";
 
 export default async (req, res, next) => {
     try {
@@ -37,7 +37,7 @@ export default async (req, res, next) => {
     } catch (er) {
         log(er, "bad");
         res.status(400).json({
-            message: "unexpected errror occured"
+            message: "unexpected error occurred"
         });
     }
 };
