@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { Navigation } from './components/Navigation';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { MessagePage } from './pages/Message';
 
 // Pages
 import { Landing } from './pages/Landing';
@@ -9,6 +10,7 @@ import { Contact } from './pages/Contact';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Contacts } from './pages/Contacts';
+import { Register } from './pages/Register';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/message" element={<MessagePage />} />
 
           {/* Protected Routes */}
           <Route

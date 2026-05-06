@@ -1,38 +1,43 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { Button, Input } from '../components/FormComponents';
-import { useAuth } from '../hooks/useAuth';
-import { Lock } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Button, Input } from "../components/FormComponents";
+import { useAuth } from "../hooks/useAuth";
+import { Lock } from "lucide-react";
+
+import { Link } from "react-router-dom";
+import { userAPI } from "../services/api";
 
 export const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState('');
+  const [apiError, setApiError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    setApiError('');
+    setApiError("");
     try {
       const result = await login(data.email, data.password);
-      if (result.success) {
-        navigate('/dashboard');
+      const { success, message, redirect } = result;
+
+      if (success || redirect) {
+        navigate(redirect || "/dashboard");
       } else {
-        setApiError(result.message || 'Login failed');
+        setApiError(message || "Login failed");
       }
     } catch (error) {
-      setApiError('An unexpected error occurred');
+      setApiError("An unexpected error occurred");
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +51,7 @@ export const Login = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-gray-900 to-gray-700 rounded-lg flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
             SC
           </div>
-          <h2 className="text-3xl font-bold">Admin Login</h2>
+          <h2 className="text-3xl font-bold"> Login</h2>
           <p className=" mt-2">Sign in to your account</p>
         </div>
 
@@ -63,13 +68,13 @@ export const Login = () => {
             <Input
               label="Email Address"
               type="email"
-              placeholder="admin@example.com"
+              placeholder="@example.com"
               required
-              {...register('email', {
-                required: 'Email is required',
+              {...register("email", {
+                required: "Email is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Invalid email address',
+                  message: "Invalid email address",
                 },
               })}
               error={errors.email?.message}
@@ -82,17 +87,17 @@ export const Login = () => {
                 type="password"
                 placeholder="••••••••"
                 required
-                {...register('password', {
-                  required: 'Password is required',
+                {...register("password", {
+                  required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: 'Password must be at least 6 characters',
+                    message: "Password must be at least 6 characters",
                   },
                 })}
                 error={errors.password?.message}
               />
               <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                <Lock size={12} /> Use your admin credentials
+                <Lock size={12} /> Use your credentials
               </p>
             </div>
 
@@ -103,11 +108,19 @@ export const Login = () => {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
-          </form>
 
-       
+            <div>
+              don't have an account? sign up
+              <Link
+                to="/register"
+                className="text-purple-400 hover:text-purple-300 transition"
+              >
+                <b> here</b>
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>

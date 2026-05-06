@@ -10,12 +10,17 @@ const api = axios.create({
 // User API
 export const userAPI = {
   login: (email, password) =>
-    api.post('/user/login', { email, password }),
+    api.post('/user/authenticate', { email, password }),
   logout: () =>
     api.post('/user/logout'),
   getProfile: () =>
     api.get('/user/profile'),
+  register: (userData) =>
+    api.post('/user/register', userData),
 };
+ 
+
+
 
 // Contact API
 export const contactAPI = {
@@ -40,3 +45,5 @@ export const assistantAPI = {
 };
 
 export default api;
+
+

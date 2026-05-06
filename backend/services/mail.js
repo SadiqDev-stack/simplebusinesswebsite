@@ -1,5 +1,6 @@
 const {APP_NAME = "sadiq caps busineess app", SENDER_MAIL = "sadiqmuh1321@gmail.com"} = process.env;
 import {composeMail} from "../utilities/general.js";
+const serverUrl = process.env.SERVER_URL || "http://localhost:8080";
 
 const templates = {
   confirmation: data => {
@@ -283,7 +284,7 @@ const sendMail = async (data = {}, req, cb = () => null) => {
   req,
   email: SENDER_MAIL,
   mail: data.email || SENDER_MAIL,
-  url: `${req.domain}/api/user/verify?token=${req.token}&type=email`
+  url: `${serverUrl}/api/user/verify?token=${req.token}&type=email`
   }, ...data}
   
   if(typeof data.email !== "string"){

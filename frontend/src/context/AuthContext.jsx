@@ -32,13 +32,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const response = await userAPI.login(email, password);
-      if (response.data.success) {
-        setUser(response.data.user);
-        return { success: true };
-      } else {
-        setError(response.data.message);
-        return { success: false, message: response.data.message };
-      }
+      return response.data;
     } catch (err) {
       const message = err.response?.data?.message || 'Login failed';
       setError(message);

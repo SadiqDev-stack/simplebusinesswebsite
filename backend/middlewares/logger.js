@@ -1,5 +1,7 @@
 import colors from "colors";
 
+const FrontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 class AppError extends Error {
   constructor(message, statusCode = 400, isSystemError = false) {
     super(message);
@@ -17,7 +19,8 @@ class AppError extends Error {
 const logger = (req, res, next) => {
   const { method, url } = req;
   const host = req.get('host');
-  req.domain = host;
+  req.domain = FrontendURL;
+  req.AppError = AppError;
   console.log(colors.cyan(`\n\na host ${host}, Sent ${method} Request To ${url}\n\n`));
   next();
 }

@@ -1,10 +1,11 @@
 
 import {log} from "./logger.js";
+import { AppError } from "./logger.js";
 
 export default async (req, res, next) => {
   if (req.path.includes("/api/")) {
     if (req.err && !req.message) {
-      if (req.err instanceof req.AppError) {
+      if (req.err instanceof AppError) {
         req.message = req.err.message
       } else {
         req.message = "something went wrong internally try again, if issues persist please report!";

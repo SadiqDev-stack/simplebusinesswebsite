@@ -66,8 +66,9 @@ export const Navigation = () => {
                 to="/login"
                 className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-black transition-colors font-medium"
               >
-                Admin Login
+                 Login
               </Link>
+              
             )}
           </div>
 
@@ -119,7 +120,7 @@ export const Navigation = () => {
                 className="block px-4 py-2 bg-gray-900 text-white rounded transition-colors font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                Admin Login
+                 Login
               </Link>
             )}
           </div>
