@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API_BASE = 'http://localhost:8080/api';
 
+
+axios.defaults.withCredentials = true
 const api = axios.create({
   baseURL: API_BASE,
   withCredentials: true,
@@ -22,21 +24,21 @@ export const userAPI = {
 
 
 
-// Contact API
+// services/api.js - Add these methods
 export const contactAPI = {
-  submit: (contactData) =>
-    api.post('/contact/support', contactData),
-  getHistory: (page = 1, limit = 10, filters = {}) =>
-    api.get('/contact/history', { params: { page, limit, ...filters } }),
-  getContact: (id) =>
-    api.get(`/contact/${id}`),
-  updateContact: (id, data) =>
-    api.put(`/contact/${id}`, data),
-  markAsRead: (id) =>
-    api.patch(`/contact/${id}/read`, {}),
-  updateFlag: (id, flag) =>
-    api.patch(`/contact/${id}/flag`, { flag }),
+  getHistory: (page, limit, filters) => {
+    let url = `/contact/history?page=${page}&limit=${limit}`;
+    if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`;
+    return api.get(url);
+  },
+  
+  getContactById: (id) => api.get(`/contact/${id}`),
+  
+  markAsRead: (contactId) => api.put('/see', { contactId }),
+  
+  markAllAsRead: () => api.put('/see-all'),
 };
+
 
 // Assistant API
 export const assistantAPI = {

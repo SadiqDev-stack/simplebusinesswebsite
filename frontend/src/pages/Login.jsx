@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button, Input } from "../components/FormComponents";
@@ -30,14 +30,13 @@ export const Login = () => {
     try {
       const result = await login(data.email, data.password);
       const { success, message, redirect } = result;
-
-      if (success || redirect) {
-        navigate(redirect || "/dashboard");
+      console.log("Login result:", result); // debug log
+      if (success) {
+        navigate(redirect);
       } else {
-        setApiError(message || "Login failed");
+        setApiError(message || "Login failed. Please try again.");
       }
-    } catch (error) {
-      setApiError("An unexpected error occurred");
+
     } finally {
       setIsLoading(false);
     }

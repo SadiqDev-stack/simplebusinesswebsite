@@ -223,9 +223,12 @@ app.post("/authenticate", authenticate, async (req, res, next) => {
         });
       });
     } else {
+      delete user.password;
+      delete user.passCode;
       res.json({
         success: true,
-        redirect: `${req.domain}/${user.role == "user" ? "/user" : "/admin"}/dashboard`,
+        redirect: `/${user.role}/dashboard`,
+        user,
         message: "Logged In Successfully, Wait A Bit !",
       });
     }
@@ -325,7 +328,6 @@ app.get("/profile", authorize, async (req, res, next) => {
     const { user } = req;
     delete user.password;
     delete user.passCode;
-    delete user.kycDetails;
     res.json({ success: true, user });
   } catch (er) {
     req.err = er;

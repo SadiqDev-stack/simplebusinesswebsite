@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { userAPI } from '../services/api';
+import React, { createContext, useState, useEffect, use } from "react";
+import { userAPI } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+ 
 
   // Check if user is already logged in
   useEffect(() => {
@@ -30,11 +31,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await userAPI.login(email, password);
+
+      if (response.data.success) {
+        setUser(response.data.user);
+      }
+
       return response.data;
     } catch (err) {
-      const message = err.response?.data?.message || 'Login failed';
+      const message = err.response?.data?.message || "Login failed";
       setError(message);
       return { success: false, message };
     } finally {
@@ -47,12 +54,14 @@ export const AuthProvider = ({ children }) => {
       await userAPI.logout();
       setUser(null);
     } catch (err) {
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, logout, setError }}>
+    <AuthContext.Provider
+      value={{ user, loading, error, login, logout, setError }}
+    >
       {children}
     </AuthContext.Provider>
   );

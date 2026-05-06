@@ -25,13 +25,13 @@ mongoose.set("bufferCommands", false);
 // middlewares
 app.use(cookieParser());
 app.use(express.json());
-
 app.use(
   cors({
-    origin: "http://localhost:5173", // your frontend
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );
+
 app.use(logger);
 
 // auto login if token exist
@@ -48,8 +48,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// 1. Serve static files from the build/dist folder
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// // 1. Serve static files from the build/dist folder
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // This ensures that refreshing the page doesn't give a 404 handle spas routing for react and other frontend routes
 app.get("/", (req, res) => {

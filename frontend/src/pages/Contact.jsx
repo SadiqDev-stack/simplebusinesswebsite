@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Input, Select, TextArea } from '../components/FormComponents';
+import { Modal } from '../components/Modal';
 import { contactAPI } from '../services/api';
 import { Send } from 'lucide-react';
 
 export const Contact = () => {
-  const [submitted, setSubmitted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -18,8 +20,6 @@ export const Contact = () => {
       email: '',
       phone: '',
       subject: '',
-      issue: '',
-      priority: 'medium',
       message: '',
     },
   });
@@ -28,13 +28,19 @@ export const Contact = () => {
     setIsLoading(true);
     try {
       const response = await contactAPI.submit(data);
-      if (response.data.success) {
-        setSubmitted(true);
+      const { success, message, redirect } = response.data;
+      if (success) {
+        setModalMessage(message || 'Thank you for your message! We will get back to you shortly.');
+        setIsModalOpen(true);
         reset();
-        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setModalMessage(message || 'Failed to submit. Please try again.');
+        setIsModalOpen(true);
       }
     } catch (error) {
       console.error('Error submitting contact form:', error);
+      setModalMessage('An error occurred. Please try again.');
+      setIsModalOpen(true);
     } finally {
       setIsLoading(false);
     }
@@ -42,6 +48,21 @@ export const Contact = () => {
 
   return (
     <div className="min-h-screen bg-black text-white py-12">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Message Received"
+        description=""
+      >
+        <p className="text-center text-white">{modalMessage}</p>
+        <Button
+          onClick={() => setIsModalOpen(false)}
+          className="w-full mt-6"
+        >
+          Close
+        </Button>
+      </Modal>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -50,12 +71,6 @@ export const Contact = () => {
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
-
-        {submitted && (
-          <div className="mb-8 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-            ✓ Thank you for your message! We'll get back to you shortly.
-          </div>
-        )}
 
         <div className="bg-black border-2 border-whit rounded-xl shadow-lg p-8 md:p-12">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -84,7 +99,7 @@ export const Contact = () => {
               />
             </div>
 
-            {/* Phone and Priority Row */}
+            {/* Phone and subject row */}
             <div className="grid md:grid-cols-2 gap-6">
               <Input
                 label="Phone Number"
@@ -93,34 +108,19 @@ export const Contact = () => {
                 {...register('phone', { required: 'Phone number is required' })}
                 error={errors.phone?.message}
               />
-              <Select
-                label="Priority Level"
-                options={[
-                  { value: 'low', label: 'Low' },
-                  { value: 'medium', label: 'Medium' },
-                  { value: 'high', label: 'High' },
-                ]}
-                {...register('priority')}
-              />
-            </div>
-
-            {/* Subject and Issue Row */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Input
+            
+                <Input
                 label="Subject"
                 placeholder="What is this about?"
                 required
                 {...register('subject', { required: 'Subject is required' })}
                 error={errors.subject?.message}
               />
-              <Input
-                label="Issue Type"
-                placeholder="e.g., Product Inquiry"
-                required
-                {...register('issue', { required: 'Issue type is required' })}
-                error={errors.issue?.message}
-              />
+      
+
             </div>
+
+          
 
             {/* Message */}
             <TextArea
