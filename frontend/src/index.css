@@ -1,0 +1,8 @@
+/* importing tailwindcss */
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-black text-white font-sans;
+  }
+}
