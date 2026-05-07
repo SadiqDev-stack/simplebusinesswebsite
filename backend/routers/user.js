@@ -208,10 +208,15 @@ app.post("/authenticate", authenticate, async (req, res, next) => {
     // Set the token as a cookie
     setCookie(res, "token", token, LOGIN_EXPIRE);
 
+    // Remove sensitive data before sending to frontend
+    delete user.password;
+    delete user.passCode;
+
     if (!user.emailVerified) {
       sendMail({ email: user.email }, req, (sent) => {
         res.json({
           success: true,
+          user,
           message: sent
             ? "logged in successfully please wait"
             : "something went wrong, please try again!",
@@ -223,8 +228,8 @@ app.post("/authenticate", authenticate, async (req, res, next) => {
         });
       });
     } else {
-      delete user.password;
-      delete user.passCode;
+      delete user.password
+      delete user.passCode
       res.json({
         success: true,
         redirect: `/${user.role}/dashboard`,

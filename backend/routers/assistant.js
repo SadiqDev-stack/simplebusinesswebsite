@@ -17,6 +17,7 @@ app.post("/", async (req, res, next) => {
 
     Assistant.getResponse(
       req,
+      Assistant.aiContexts.assistance(),
       [{ role: "user", content: prompt }],
       (success, response) => {
         if (!success) {
@@ -27,6 +28,50 @@ app.post("/", async (req, res, next) => {
         }
 
         // Just return the plain text response directly
+        res.json({
+          success: true,
+          message: response
+        });
+      }
+    );
+  } catch (error) {
+    log(error);
+    req.err = error;
+    next();
+  }
+});
+
+
+app.post("/chat", async (req, res, next) => {
+  try {
+    const { message, userId, userName } = req.body;
+
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Message is required"
+      });
+    }
+
+    const prompt = `
+User: ${userName || "Customer"}
+Message: ${message}
+
+Please provide a helpful response about Sadiq Caps products, orders, or support.
+`;
+
+    Assistant.getResponse(
+      req,
+      Assistant.aiContexts.userChatContext(),
+      [{ role: "user", content: prompt }],
+      (success, response) => {
+        if (!success) {
+          return res.json({
+            success: false,
+            message: "Sorry, I'm having trouble. Please try again."
+          });
+        }
+
         res.json({
           success: true,
           message: response
