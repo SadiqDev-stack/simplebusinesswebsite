@@ -3,7 +3,7 @@ import colors from "colors";
 // Determine Frontend URL based on environment
 const FrontendURL = process.env.FRONTEND_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? 'https://sadiqcaps.vercel.app'
+    ? process.env.FRONTEND_LIVE_URI
     : 'http://localhost:5173');
 
 class AppError extends Error {

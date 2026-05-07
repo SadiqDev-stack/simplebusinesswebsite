@@ -21,12 +21,12 @@ const app = express();
 
 const {
   PORT = 8080,
-  FRONTEND_URL = "http://localhost:5173",
   NODE_ENV = "development",
 } = process.env;
 
 
-
+const FRONTEND_URL = NODE_ENV == "development" ?
+process.env.FRONTEND_URL : FRONTEND_LIVE_URI;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
