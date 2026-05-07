@@ -19,14 +19,12 @@ import assistantRouter from "./routers/assistant.js";
 
 const app = express();
 
-const {
-  PORT = 8080,
-  NODE_ENV = "development",
-} = process.env;
+const { PORT = 8080, NODE_ENV = "development" } = process.env;
 
-
-const FRONTEND_URL = NODE_ENV == "development" ?
-process.env.FRONTEND_URL : process.env.FRONTEND_LIVE_URI;
+const FRONTEND_URL =
+  NODE_ENV == "development"
+    ? process.env.FRONTEND_URL
+    : process.env.FRONTEND_LIVE_URI;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -70,18 +68,18 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // React SPA routing
 app.get("/", (req, res) => {
   res.json({
-    message: "server is alive and running successfully"
-  })
+    message: "server is alive and running successfully",
+  });
 });
 
 // ======================
 // API Routes
 // ======================
 
+app.use('/api/user/logout', userRouter); // logout dont need db connection
 app.use("/api/user", dbHandler, userRouter);
 app.use("/api/contact", dbHandler, contactRouter);
 app.use("/api/assistant", dbHandler, assistantRouter);
@@ -104,24 +102,10 @@ app.get("/message", (req, res, next) => {
 
 app.use(errorHandler);
 
-// ======================
-// Database Connection
-// ======================
-
-mongoose
-  .connect(DB_URI)
-  .then(() => {
-    log("MongoDB connected");
-
-    // only listen locally
-    if (NODE_ENV !== "production") {
-      app.listen(PORT, () => {
-        log(`Server running on http://localhost:${PORT}`);
-      });
-    }
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
+if (NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    log(`Server running on http://localhost:${PORT}`);
   });
+}
 
 export default app;
