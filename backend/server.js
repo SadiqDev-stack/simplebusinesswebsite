@@ -70,15 +70,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// ======================
-// Static frontend
-// ======================
-
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // React SPA routing
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+  res.json({
+    message: "server is alive and running successfully"
+  })
 });
 
 // ======================
