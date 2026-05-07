@@ -1,3 +1,4 @@
+// frontend/src/App.jsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Navigation } from './components/Navigation';
@@ -11,6 +12,7 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Contacts } from './pages/Contacts';
 import { Register } from './pages/Register';
+import { UserDashboard } from './pages/UserDashboard';
 
 function App() {
   return (
@@ -25,11 +27,21 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/message" element={<MessagePage />} />
 
-          {/* Protected Routes */}
+          {/* User Dashboard Route */}
+          <Route
+            path="/user/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute adminOnly={true}>
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -37,7 +49,7 @@ function App() {
           <Route
             path="/contacts"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute adminOnly={true}>
                 <Contacts />
               </ProtectedRoute>
             }

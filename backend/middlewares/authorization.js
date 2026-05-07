@@ -26,7 +26,8 @@ export default async (req, res, next) => {
         console.log("Authorization error:", er.message);
         res.status(401).json({
             success: false,
-            message: "Unauthorized - please login again"
+            message: "Unauthorized - please login again",
+            redirect: "/login"
         });
     }
 };

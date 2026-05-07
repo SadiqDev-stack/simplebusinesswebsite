@@ -5,7 +5,6 @@ import {
   MapPin, Clock, CreditCard, RotateCcw, ChevronRight 
 } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { Navigation } from '../components/Navigation';
 
 export const Landing = () => {
   const products = [
@@ -13,49 +12,49 @@ export const Landing = () => {
       id: 1,
       name: 'Miyaram',
       description: 'Premium handcrafted cap with unique embroidery and breathable cotton fabric.',
-      price: '$29.99',
+      price: '₦29,999',
       image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=400&fit=crop',
     },
     {
       id: 2,
       name: 'Elite Series',
       description: 'Luxury collection featuring premium wool blend for the modern professional.',
-      price: '$49.99',
+      price: '₦49,999',
       image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=400&fit=crop',
     },
     {
       id: 3,
       name: 'Sport Pro',
       description: 'High-performance athletic cap with advanced sweat-wicking technology.',
-      price: '$34.99',
+      price: '₦34,999',
       image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600&h=400&fit=crop',
     },
     {
       id: 4,
       name: 'Urban Edge',
       description: 'Streetwear inspired cap with bold designs and premium aesthetics.',
-      price: '$44.99',
+      price: '₦44,999',
       image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=400&fit=crop',
     },
     {
       id: 5,
       name: 'Heritage',
       description: 'Classic vintage design crafted from sustainable materials.',
-      price: '$39.99',
+      price: '₦39,999',
       image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=400&fit=crop',
     },
     {
       id: 6,
       name: 'Executive',
       description: 'Sophisticated cap featuring premium materials and refined details.',
-      price: '$59.99',
+      price: '₦59,999',
       image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600&h=400&fit=crop',
     }
   ];
 
   const features = [
     { icon: <Award className="w-6 h-6" />, title: 'Premium Quality', description: 'Finest materials for durability and comfort' },
-    { icon: <Truck className="w-6 h-6" />, title: 'Free Shipping', description: 'On orders over $50' },
+    { icon: <Truck className="w-6 h-6" />, title: 'Free Shipping', description: 'On orders over ₦50,000' },
     { icon: <MessageCircle className="w-6 h-6" />, title: '24/7 Support', description: 'Always here to help you' },
     { icon: <Shield className="w-6 h-6" />, title: '2 Year Warranty', description: 'Quality guaranteed' },
     { icon: <CreditCard className="w-6 h-6" />, title: 'Secure Payment', description: '100% safe transactions' },
@@ -69,13 +68,15 @@ export const Landing = () => {
   ];
 
   return (
-
-
-    <div>   
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-black">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse delay-1000"></div>
+      </div>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16 md:pt-32 md:pb-24">
+      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -106,7 +107,6 @@ export const Landing = () => {
                     <ChevronRight className="inline-block ml-2 w-4 h-4" />
                   </Button>
                 </Link>
-          
               </div>
 
               <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-800">
@@ -173,9 +173,6 @@ export const Landing = () => {
                 Every cap is crafted with attention to detail and the finest
                 materials.
               </p>
-              <div className="flex gap-4">
-          
-              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <img
@@ -227,15 +224,14 @@ export const Landing = () => {
                     {product.description}
                   </p>
                   <Link to='/contact'>
-                  <button className="w-full px-4 py-2 border border-gray-700 rounded-lg hover:bg-purple-600 hover:border-purple-600 transition-all duration-300">
-                    learn more
-                  </button>
+                    <button className="w-full px-4 py-2 border border-gray-700 rounded-lg hover:bg-purple-600 hover:border-purple-600 transition-all duration-300">
+                      Learn More
+                    </button>
                   </Link>
                 </div>
               </div>
             ))}
           </div>
- 
         </div>
       </section>
 
@@ -336,7 +332,6 @@ export const Landing = () => {
                 Contact Us Today
               </Button>
             </Link>
-  
           </div>
         </div>
       </section>
@@ -354,26 +349,35 @@ export const Landing = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-purple-400" />
-                  <span className="text-gray-300">hello@sadiqcaps.com</span>
+                  <span className="text-gray-300">support@sadiqcaps.com</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-purple-400" />
-                  <span className="text-gray-300">+1 (555) 123-4567</span>
+                  <span className="text-gray-300">+234 814 574 2404</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-purple-400" />
                   <span className="text-gray-300">
-                    123 Fashion Ave, New York, NY 10001
+                    Lagos, Nigeria
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-purple-400" />
-                  <span className="text-gray-300">Mon-Fri: 9AM - 6PM EST</span>
+                  <span className="text-gray-300">Mon-Fri: 9AM - 6PM WAT</span>
                 </div>
               </div>
             </div>
             <div>
-      
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.668048099165!2d3.376091314560119!3d6.447581825631371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2b9b1b1b1b%3A0x0!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1234567890123!5m2!1sen!2sng" 
+                width="100%" 
+                height="300" 
+                style={{ border: 0, borderRadius: '12px' }} 
+                allowFullScreen 
+                loading="lazy"
+                title="Sadiq Caps Location"
+                className="rounded-xl"
+              ></iframe>
             </div>
           </div>
         </div>
@@ -397,26 +401,53 @@ export const Landing = () => {
             <div>
               <h4 className="font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-             
                 <li>
-                  <Link
-                    to="/contact"
-                    className="hover:text-purple-400 transition"
-                  >
+                  <Link to="/" className="hover:text-purple-400 transition">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-purple-400 transition">
                     Contact
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-          </div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>
+                  <Link to="/faq" className="hover:text-purple-400 transition">
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/returns" className="hover:text-purple-400 transition">
+                    Returns
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shipping" className="hover:text-purple-400 transition">
+                    Shipping
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <div>
               <h4 className="font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <FaFacebook className="w-5 h-5" />
-                <FaTwitter className="w-5 h-5" />
-                <FaInstagram className="w-5 h-5" />
-                <FaLinkedin className="w-5 h-5" />{" "}
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition">
+                  <FaFacebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition">
+                  <FaTwitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition">
+                  <FaInstagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 transition">
+                  <FaLinkedin className="w-5 h-5" />
+                </a>
               </div>
             </div>
           </div>

@@ -19,6 +19,6 @@ export default async (req, res, next) => {
     })
     if (req.err) log(req.err, "bad")
   } else {
-    res.redirect("/404.html")
+    res.redirect("/")
   }
 }

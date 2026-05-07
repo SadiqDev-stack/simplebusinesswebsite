@@ -46,6 +46,19 @@ export const assistantAPI = {
     api.post('/assistant', { message, contactData }),
 };
 
+export const sendChatMessage = async (message, userId, userName) => {
+  try {
+    const response = await fetch(`${API_BASE}/assistant/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, userId, userName })
+    });
+    return await response.json();
+  } catch (error) {
+    return { success: false, message: 'Network error. Please try again.' };
+  }
+};
+
 export default api;
 
 
