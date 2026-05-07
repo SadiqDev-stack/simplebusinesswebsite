@@ -1,85 +1,130 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import { templates } from "./services/mail.js";
 import cookieParser from "cookie-parser";
-import { dbHandler } from "./middlewares/dbhandler.js";
-import errorHandler from "./middlewares/error.js";
-
-const app = express();
-const { PORT = 8080, DB_URI } = process.env;
-import { logger, log } from "./middlewares/logger.js";
-import { useLimiter } from "./utilities/general.js";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+import { templates } from "./services/mail.js";
+import { DB_URI, dbHandler } from "./middlewares/dbhandler.js";
+import errorHandler from "./middlewares/error.js";
+import { logger, log } from "./middlewares/logger.js";
+
+import { useLimiter } from "./utilities/general.js";
+
 import userRouter from "./routers/user.js";
 import contactRouter from "./routers/contact.js";
 import assistantRouter from "./routers/assistant.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+
+const app = express();
+
+const {
+  PORT = 8080,
+  FRONTEND_URL = "http://localhost:5173",
+  NODE_ENV = "development",
+} = process.env;
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 mongoose.set("bufferCommands", false);
 
-// middlewares
+// ======================
+// Middlewares
+// ======================
+
 app.use(cookieParser());
-app.use(express.json());
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: FRONTEND_URL,
     credentials: true,
   }),
 );
 
+app.use(express.json());
+
 app.use(logger);
 
-// auto login if token exist
+// ======================
+// Auto auth redirect
+// ======================
+
 app.use((req, res, next) => {
   const { token = false } = req.cookies;
+
   const isAuthPage = req.url === "/auth.html";
   const isDashboardPage = req.path.includes("/dashboard/");
+
   if (token && isAuthPage) {
     return res.redirect("/user/dashboard.html");
   }
+
   if (!token && isDashboardPage) {
     return res.redirect("/auth.html");
   }
+
   next();
 });
 
-// // 1. Serve static files from the build/dist folder
-// app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// ======================
+// Static frontend
+// ======================
 
-// This ensures that refreshing the page doesn't give a 404 handle spas routing for react and other frontend routes
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+// React SPA routing
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
-// routers
+// ======================
+// API Routes
+// ======================
+
 app.use("/api/user", dbHandler, userRouter);
 app.use("/api/contact", dbHandler, contactRouter);
 app.use("/api/assistant", dbHandler, assistantRouter);
 
-// for message plain and redirect
+// ======================
+// Message Route
+// ======================
+
 app.get("/message", (req, res, next) => {
   try {
     res.send(templates.message({ ...req.query, req }));
-  } catch (er) {
-    next();
+  } catch (err) {
+    next(err);
   }
 });
 
-// API error and not found handler
+// ======================
+// Error Handler
+// ======================
+
 app.use(errorHandler);
 
-// server starting
-const startServer = () => {
-  app.listen(PORT, () => {
-    log(`server started at http://localhost:${PORT}`);
-  });
-};
+// ======================
+// Database Connection
+// ======================
 
-startServer();
+mongoose
+  .connect(DB_URI)
+  .then(() => {
+    log("MongoDB connected");
+
+    // only listen locally
+    if (NODE_ENV !== "production") {
+      app.listen(PORT, () => {
+        log(`Server running on http://localhost:${PORT}`);
+      });
+    }
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 export default app;

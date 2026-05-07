@@ -204,7 +204,7 @@ LOGIN_EXPIRE=7d
 # Domain (for email links)
 DOMAIN=http://localhost:3000
 
-# AI API (optional)
+# AI API (optional) use the groq api
 AI_API_KEY=your_ai_api_key
 AI_MODEL=model_name
 AI_ENDPOINT=api_endpoint

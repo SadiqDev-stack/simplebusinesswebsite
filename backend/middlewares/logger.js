@@ -1,6 +1,10 @@
 import colors from "colors";
 
-const FrontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+// Determine Frontend URL based on environment
+const FrontendURL = process.env.FRONTEND_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://sadiqcaps.vercel.app'
+    : 'http://localhost:5173');
 
 class AppError extends Error {
   constructor(message, statusCode = 400, isSystemError = false) {

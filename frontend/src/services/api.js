@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8080/api';
-
+// Use environment variable or default based on environment
+const API_BASE = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD 
+    ? 'https://sadiqcapsapi.vercel.app/api'
+    : 'http://localhost:8080/api');
 
 axios.defaults.withCredentials = true
 const api = axios.create({
