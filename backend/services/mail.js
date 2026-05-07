@@ -1,8 +1,6 @@
 const { APP_NAME = "Sadiq Caps", SENDER_MAIL = "support@sadiqcaps.com" } = process.env;
 import { composeMail } from "../utilities/general.js";
-import { log } from "../middlewares/logger.js";
-
-const serverUrl = process.env.SERVER_URL || "http://localhost:8080";
+import { FrontendURL, log, serverUrl } from "../middlewares/logger.js";
 
 const templates = {
   confirmation: data => {
@@ -190,9 +188,9 @@ const templates = {
           Premium Quality Caps & Headwear
         </p>
         <div class="footer-links">
-          <a href="${serverUrl}">Home</a>
-          <a href="${serverUrl}/contact">Contact</a>
-          <a href="${serverUrl}/privacy">Privacy</a>
+          <a href="${FrontendURL}">Home</a>
+          <a href="${FrontendURL}/contact">Contact</a>
+          <a href="${FrontendURL}/privacy">Privacy</a>
         </div>
       </div>
     </div>
@@ -376,6 +374,8 @@ const sendMail = async (data = {}, req, cb = () => null) => {
       url: `${serverUrl}/api/user/verify?token=${req.token}&type=email`,
       ...data
     };
+
+    console.log(data)
     
     if (typeof data.email !== "string") {
       data = { ...data, bcc: data.email };

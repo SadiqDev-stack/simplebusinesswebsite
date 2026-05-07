@@ -5,11 +5,9 @@ import {
   XCircle, 
   AlertCircle, 
   Info, 
-  Mail,
   ArrowRight,
   Loader2,
-  Home,
-  LogIn
+  Home
 } from 'lucide-react';
 
 export const MessagePage = () => {
@@ -18,15 +16,23 @@ export const MessagePage = () => {
   const [countdown, setCountdown] = useState(5);
   const [redirecting, setRedirecting] = useState(false);
 
-  // Get params from URL
   const title = searchParams.get('title') || 'Notification';
   const description = searchParams.get('description') || '';
-  const redirect = searchParams.get('redirect') === 'true';
-  const redirectUrl = searchParams.get('url') || '/';
-  const type = searchParams.get('type') || 'success'; // success, error, warning, info
-  const autoRedirect = searchParams.get('auto') === 'true';
+  const redirectParam = searchParams.get('redirect');
+  const urlParam = searchParams.get('url');
+  const type = searchParams.get('type') || 'success';
+  
+  let redirect = false;
+  let redirectUrl = '/';
+  
+  if (redirectParam === 'true' || redirectParam === '1' || redirectParam === 'yes') {
+    redirect = true;
+    redirectUrl = urlParam || '/';
+  } else if (redirectParam && redirectParam !== 'false' && redirectParam !== '0' && redirectParam !== 'no') {
+    redirect = true;
+    redirectUrl = redirectParam;
+  }
 
-  // Determine icon based on type
   const getIcon = () => {
     switch(type) {
       case 'success':
@@ -53,9 +59,8 @@ export const MessagePage = () => {
     }
   };
 
-  // Handle automatic redirect
   useEffect(() => {
-    if (redirect && autoRedirect) {
+    if (redirect && redirectUrl) {
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -70,7 +75,7 @@ export const MessagePage = () => {
 
       return () => clearInterval(timer);
     }
-  }, [redirect, autoRedirect, redirectUrl, navigate]);
+  }, [redirect, redirectUrl, navigate]);
 
   const handleRedirect = () => {
     setRedirecting(true);
@@ -83,41 +88,32 @@ export const MessagePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-black flex items-center justify-center p-4">
-      {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse delay-1000"></div>
       </div>
 
-      {/* Message Card */}
       <div className="relative max-w-md w-full">
-        {/* Glow effect */}
         <div className={`absolute -inset-1 bg-gradient-to-r ${getGradient()} rounded-2xl blur-xl opacity-30 animate-pulse`}></div>
         
-        {/* Main Card */}
         <div className="relative bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-gray-800 p-8 text-center shadow-2xl">
-          {/* Icon */}
           <div className="mb-6 flex justify-center transform animate-bounce-in">
             {getIcon()}
           </div>
 
-          {/* Title */}
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent mb-4">
-            {title}
+            {decodeURIComponent(title)}
           </h1>
 
-          {/* Description */}
           <div className="text-gray-400 mb-8 space-y-2">
-            {description.split('\n').map((line, idx) => (
+            {decodeURIComponent(description).split('\n').map((line, idx) => (
               <p key={idx} className="leading-relaxed">
                 {line}
               </p>
             ))}
           </div>
 
-      
-          {/* Countdown for auto-redirect */}
-          {redirect && autoRedirect && countdown > 0 && (
+          {redirect && countdown > 0 && (
             <div className="mb-6">
               <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -132,7 +128,6 @@ export const MessagePage = () => {
             </div>
           )}
 
-          {/* Buttons */}
           <div className="space-y-3">
             {redirect && (
               <button
@@ -157,7 +152,7 @@ export const MessagePage = () => {
             <button
               onClick={handleGoHome}
               className="w-full px-6 py-3 border border-gray-700 text-gray-300 hover:border-purple-500 hover:text-purple-400 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2"
-            >
+              >
               <Home className="w-4 h-4" />
               Go to Homepage
             </button>
@@ -174,7 +169,7 @@ export const MessagePage = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes bounce-in {
           0% {
             opacity: 0;

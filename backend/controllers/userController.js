@@ -64,7 +64,7 @@ export const userController = {
       }
 
       const hashedPassword = await hash(password);
-      req.body.role = email == ADMIN_EMAIL ? "super" : "user";
+      req.body.role = email == ADMIN_EMAIL ? "admin" : "user";
       const user = await User.create({ ...req.body, password: hashedPassword });
 
       if (!user)
@@ -83,7 +83,7 @@ export const userController = {
           message: `Registration Successful, ${sent ? "Wait A Bit!" : "Please Login!"}`,
           redirect: sent
             ? encodeURI(
-                `${req.domain}/message?title=Registration Successful&description=Registration Successful, Please Check Your Email including spam folder For Verification&redirect=false`,
+                `/message?title=Registration Successful&description=Registration Successful, Please Check Your Email including spam folder For Verification&redirect=false`,
               )
             : false,
         });

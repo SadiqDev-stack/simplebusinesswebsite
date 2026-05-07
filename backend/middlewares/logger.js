@@ -1,8 +1,12 @@
 import colors from "colors";
+const {
+  NODE_ENV,
+  PORT
+} = process.env;
 
 // Determine Frontend URL based on environment
 const FrontendURL = process.env.FRONTEND_URL || 
-  (process.env.NODE_ENV === 'production' 
+  (NODE_ENV === 'production' 
     ? process.env.FRONTEND_LIVE_URI
     : 'http://localhost:5173');
 
@@ -19,11 +23,14 @@ class AppError extends Error {
   }
 }
 
+const serverUrl = NODE_ENV === 'production' ? "https://sadiqcapsapi.vercel.app" : `http://localhost:${PORT}`;
+
 
 const logger = (req, res, next) => {
   const { method, url } = req;
   const host = req.get('host');
   req.domain = FrontendURL;
+  req.serverUrl = serverUrl;
   req.AppError = AppError;
   console.log(colors.cyan(`\n\na host ${host}, Sent ${method} Request To ${url}\n\n`));
   next();
@@ -51,5 +58,7 @@ const log = (message, color = "good") => {
 export {
   log,
   logger,
+  FrontendURL,
+  serverUrl,
   AppError
 }

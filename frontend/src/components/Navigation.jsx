@@ -60,7 +60,7 @@ export const Navigation = () => {
                     Admin Dashboard
                   </Link>
                 )}
-                
+
                 {/* User Dashboard - Visible to ALL logged in users */}
                 <Link
                   to="/user/dashboard"
@@ -68,7 +68,7 @@ export const Navigation = () => {
                 >
                   Dashboard
                 </Link>
-                
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
@@ -78,17 +78,28 @@ export const Navigation = () => {
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors font-medium"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors font-medium"
+                >
+                  Register
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors font-medium"
+                >
+                  Login
+                </Link>
+              </>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-white"
+          >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -118,7 +129,7 @@ export const Navigation = () => {
                     Admin Dashboard
                   </Link>
                 )}
-                
+
                 {/* User Dashboard - Visible to ALL logged in users on mobile */}
                 <Link
                   to="/user/dashboard"
@@ -127,7 +138,7 @@ export const Navigation = () => {
                 >
                   Dashboard
                 </Link>
-                
+
                 <button
                   onClick={() => {
                     handleLogout();

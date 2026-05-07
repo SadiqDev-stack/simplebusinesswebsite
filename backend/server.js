@@ -9,7 +9,7 @@ import { dirname } from "path";
 import { templates } from "./services/mail.js";
 import { DB_URI, dbHandler } from "./middlewares/dbhandler.js";
 import errorHandler from "./middlewares/error.js";
-import { logger, log } from "./middlewares/logger.js";
+import { logger, log, FrontendURL } from "./middlewares/logger.js";
 
 import { useLimiter } from "./utilities/general.js";
 
@@ -21,12 +21,7 @@ const app = express();
 
 const { PORT = 8080, NODE_ENV = "development" } = process.env;
 
-const FRONTEND_URL =
-  NODE_ENV == "development"
-    ? process.env.FRONTEND_URL
-    : process.env.FRONTEND_LIVE_URI;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 
 mongoose.set("bufferCommands", false);
 
@@ -38,7 +33,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: FrontendURL,
     credentials: true,
   }),
 );
