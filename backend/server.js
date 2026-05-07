@@ -26,7 +26,7 @@ const {
 
 
 const FRONTEND_URL = NODE_ENV == "development" ?
-process.env.FRONTEND_URL : FRONTEND_LIVE_URI;
+process.env.FRONTEND_URL : process.env.FRONTEND_LIVE_URI;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
