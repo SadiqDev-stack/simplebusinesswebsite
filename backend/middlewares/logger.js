@@ -5,8 +5,7 @@ const {
 } = process.env;
 
 // Determine Frontend URL based on environment
-const FrontendURL = process.env.FRONTEND_URL || 
-  (NODE_ENV === 'production' 
+const FrontendURL =  (NODE_ENV === 'production' 
     ? process.env.FRONTEND_LIVE_URI
     : 'http://localhost:5173');
 
