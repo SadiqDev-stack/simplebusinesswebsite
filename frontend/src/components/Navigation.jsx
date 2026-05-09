@@ -117,7 +117,7 @@ export const Navigation = () => {
                 {link.label}
               </Link>
             ))}
-            {user ? (
+            {user && user.emailVerified ? (
               <>
                 {/* Admin Dashboard - Only visible to admin/super on mobile */}
                 {isAdmin && (

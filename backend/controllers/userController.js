@@ -33,7 +33,9 @@ export const userController = {
       } = req.body;
 
       if (name.length >= 100) {
-        return res.status(400).json({ success: false, message: "your name is too long" });
+        return res
+          .status(400)
+          .json({ success: false, message: "your name is too long" });
       }
 
       if (address.length >= 500) {
@@ -64,8 +66,11 @@ export const userController = {
       }
 
       const hashedPassword = await hash(password);
-      req.body.role = email == ADMIN_EMAIL ? "admin" : "user";
-      const user = await User.create({ ...req.body, password: hashedPassword });
+      const user = await User.create({
+        ...req.body,
+        role: email == ADMIN_EMAIL ? "admin" : "user",
+        password: hashedPassword,
+      });
 
       if (!user)
         throw new req.AppError("fail to create account, check your details");
@@ -101,9 +106,11 @@ export const userController = {
       const { token = false, type = "email" } = req.query;
 
       if (!token) {
-        return res.status(400).redirect(
-          `${req.domain}/message?title=invalid token&description=the token provided is invalid, please relogin and try again&spinner=true&redirect=/login`,
-        );
+        return res
+          .status(400)
+          .redirect(
+            `${req.domain}/message?title=invalid token&description=the token provided is invalid, please relogin and try again&spinner=true&redirect=/login`,
+          );
       }
 
       try {
@@ -229,7 +236,9 @@ export const userController = {
   async logout(req, res, next) {
     try {
       res.clearCookie("token");
-      res.status(200).json({ success: true, message: "you successfully logged out!" });
+      res
+        .status(200)
+        .json({ success: true, message: "you successfully logged out!" });
     } catch (er) {
       console.log(er);
       req.message = "something went wrong, try again!";
@@ -248,15 +257,21 @@ export const userController = {
         typeof newPassword !== "string" ||
         typeof passCode !== "string"
       ) {
-        return res.status(400).json({ success: false, message: "invalid name or transaction pin!" });
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message: "invalid name or transaction pin!",
+          });
       }
 
       if (!email.includes("@") || newPassword.length < 8) {
         return res.status(400).json({
           success: false,
-          message: newPassword.length < 8
-            ? "fail to reset, password is short"
-            : "fail to reset, invalid email field",
+          message:
+            newPassword.length < 8
+              ? "fail to reset, password is short"
+              : "fail to reset, invalid email field",
         });
       }
 

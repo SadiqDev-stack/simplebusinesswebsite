@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!user) {
+  if (!user || !user.emailVerified) {
     return <Navigate to="/login" replace />;
   }
 
