@@ -26,11 +26,14 @@ export const contactController = {
           message: "We received your email, we will review it shortly, fix the issues and notify you, thank you 🙏",
         });
 
-        return sendMail({
+       sendMail({
           subject,
           template: "message",
-          title: `${subject} - ${issue} - ${priority}`,
+          email: process.env.ADMIN_EMAIL,
+          title: `${subject} `,
           description: `${message} <br> <br> <strong> sent by ${email}, contact id for more details ${contact._id}`,
+        }, req, sent => {
+          log(`Contact email sent: ${sent ? "success" : "failed"}`);
         });
       } else {
         return res.status(500).json({ success: false, message: "something went wrong please try again!" });
