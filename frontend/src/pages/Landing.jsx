@@ -13,42 +13,42 @@ export const Landing = () => {
       name: 'Miyaram',
       description: 'Premium handcrafted cap with unique embroidery and breathable cotton fabric.',
       price: '₦29,999',
-      image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=400&fit=crop',
+      image: '/caps/one.png',
     },
     {
       id: 2,
       name: 'Elite Series',
       description: 'Luxury collection featuring premium wool blend for the modern professional.',
       price: '₦49,999',
-      image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=400&fit=crop',
+      image: '/caps/two.png',
     },
     {
       id: 3,
       name: 'Sport Pro',
       description: 'High-performance athletic cap with advanced sweat-wicking technology.',
       price: '₦34,999',
-      image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600&h=400&fit=crop',
+      image: '/caps/three.png',
     },
     {
       id: 4,
       name: 'Urban Edge',
       description: 'Streetwear inspired cap with bold designs and premium aesthetics.',
       price: '₦44,999',
-      image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=400&fit=crop',
+      image: '/caps/four.png',
     },
     {
       id: 5,
       name: 'Heritage',
       description: 'Classic vintage design crafted from sustainable materials.',
       price: '₦39,999',
-      image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=400&fit=crop',
+      image: '/caps/five.png',
     },
     {
       id: 6,
       name: 'Executive',
       description: 'Sophisticated cap featuring premium materials and refined details.',
       price: '₦59,999',
-      image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600&h=400&fit=crop',
+      image: '/caps/six.png',
     }
   ];
 
@@ -62,9 +62,9 @@ export const Landing = () => {
   ];
 
   const testimonials = [
-    { name: 'Sarah Johnson', role: 'Fashion Blogger', rating: 5, text: 'The Miyaram cap exceeded my expectations! Amazing quality and comfort.', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop' },
-    { name: 'Michael Chen', role: 'Pro Athlete', rating: 5, text: 'Best sports cap I\'ve ever used. Perfect for my training sessions.', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop' },
-    { name: 'Emma Davis', role: 'CEO, TechStart', rating: 5, text: 'Executive series is pure luxury. Highly recommend Sadiq Caps!', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop' }
+    { name: 'umar abubakar caps', role: 'Fashion Blogger', rating: 5, text: 'The Miyaram cap exceeded my expectations! Amazing quality and comfort.', image: '/caps/seven.png' },
+    { name: 'two brother caps', role: 'cap dealer', rating: 5, text: 'Best sports cap I\'ve ever used. Perfect for my training sessions.', image: '/caps/five.png' },
+    { name: 'mai borno caps', role: 'borno cap dealer', rating: 5, text: 'Executive series is pure luxury. Highly recommend Sadiq Caps!', image: '/caps/three.png' }
   ];
 
   return (
@@ -129,7 +129,7 @@ export const Landing = () => {
             <div className="relative">
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&h=600&fit=crop"
+                  src="/caps/five.png"
                   alt="Premium Caps"
                   className="w-full h-full object-cover"
                 />
@@ -176,12 +176,12 @@ export const Landing = () => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <img
-                src="https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=400&h=300&fit=crop"
+                src="/caps/three.png"
                 alt="Cap making"
                 className="rounded-lg"
               />
               <img
-                src="https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=400&h=300&fit=crop"
+                src="caps/five.png"
                 alt="Cap display"
                 className="rounded-lg mt-8"
               />
