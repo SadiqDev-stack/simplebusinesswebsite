@@ -132,20 +132,21 @@ process.__dirname = __dirname;
 
 const generateKey = () => "sadiqsharp_" + new ObjectId().toString();
 
+const { NODE_ENV = "development" } = process.env;
+
+const cookieConfig = {
+  httpOnly: Node_ENV === "production" ? true : false,
+  sameSite: Node_ENV === "production" ? "none" : "lax",
+  path: "/",
+  secure: Node_ENV === "production" ? true : false,
+};
 const setCookie = (
   res,
   key = "key",
   value = "value",
   expiresInMs = 1000 * 60 * 60,
 ) => {
-  const options = {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    secure: false,
-
-  };
-  res.cookie(key, value, options);
+  res.cookie(key, value, cookieConfig);
 };
 
 // for input and data
