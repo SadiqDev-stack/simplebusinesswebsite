@@ -156,13 +156,15 @@ export const userController = {
         _id: user._id.toString(),
         email: user.email,
       });
+
       setCookie(res, "token", token, LOGIN_EXPIRE);
 
       delete user.password;
       delete user.passCode;
 
       if (!user.emailVerified) {
-        sendMail({ email: user.email }, req, (sent) => {
+        req.token = token;
+        sendMail({ email: user.email, token }, req, (sent) => {
           res.status(200).json({
             success: true,
             user,
