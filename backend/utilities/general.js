@@ -135,11 +135,12 @@ const generateKey = () => "sadiqsharp_" + new ObjectId().toString();
 const { NODE_ENV = "development" } = process.env;
 
 const cookieConfig = {
-  httpOnly: Node_ENV === "production" ? true : false,
-  sameSite: Node_ENV === "production" ? "none" : "lax",
+  httpOnly: NODE_ENV === "production" ? true : false,
+  sameSite: NODE_ENV === "production" ? "none" : "lax",
   path: "/",
-  secure: Node_ENV === "production" ? true : false,
+  secure: NODE_ENV === "production" ? true : false,
 };
+
 const setCookie = (
   res,
   key = "key",
