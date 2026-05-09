@@ -2,6 +2,7 @@
 import { getTokenData } from "../utilities/general.js";
 import mongoose from "mongoose";
 import { log } from "./logger.js";
+import User from "../models/user.js";
 const ObjectId = mongoose.Types.ObjectId;
 
 export default async (req, res, next) => {
@@ -17,10 +18,18 @@ export default async (req, res, next) => {
             throw new Error("Invalid token data");
         }
         
-        userData.id = new ObjectId(userData._id || userData.id);
-        req.user = userData;
-        req.user._id = userData.id.toString();
-        
+        const user = await User.findOne({
+            _id: userData._id
+        }).lean();
+
+        delete user.password;
+        delete user.passCode;
+
+        if(!user){
+              throw new Error("user doesnt exist please login!");
+        }
+
+        req.user = user;     
         next();
     } catch (er) {
         console.log("Authorization error:", er.message);
